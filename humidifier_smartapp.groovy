@@ -43,6 +43,7 @@ def initialize() {
   triggerOnHumidity(humiditySensor.humidityState)
 
   subscribe(humiditySensor, "humidity", humidityHandler)
+  schedule(toTime, scheduledTurnOff)
 }
 
 def humidityHandler(evt) {
@@ -76,6 +77,11 @@ private isBetween() {
   }
 
   return timeOfDayIsBetween(fromTime, toTime, new Date(), location.timeZone)
+}
+
+private scheduledTurnOff() {
+  log.debug "The time is $toTime"
+  turnOff()
 }
 
 private turnOn() {
