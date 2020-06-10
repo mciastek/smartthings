@@ -1,8 +1,8 @@
 definition(
-    name: "Humidity plug auto switch",
+    name: "Humidifier auto-switch",
     namespace: "mciastek",
     author: "Mirek Ciastek",
-    description: "Turn on/off smart plug for given humidity and in given time range",
+    description: "Turn on/off humidifier connected with smart plug for given humidity and in given time range",
     category: "Convenience",
     iconUrl: "https://s3.amazonaws.com/smartapp-icons/Meta/temp_thermo-switch.png",
     iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Meta/temp_thermo-switch@2x.png",
@@ -11,11 +11,11 @@ definition(
 
 preferences {
   section("Monitor humidity") {
-    input "humiditySensor1", "capability.relativeHumidityMeasurement", required: true
+    input "humiditySensor", "capability.relativeHumidityMeasurement", required: true
   }
 
   section("When humidity drops below") {
-    input "humidity1", "number", title: "Humidity?", required: true
+    input "humidity", "number", title: "Humidity?", required: true
   }
 
   section("Turn on between what times?") {
@@ -24,7 +24,7 @@ preferences {
   }
 
   section("Toggle plug") {
-    input "plug1", "capability.switch", required: true
+    input "plug", "capability.switch", required: true
   }
 }
 
@@ -40,9 +40,9 @@ def updated() {
 }
 
 def initialize() {
-  triggerOnHumidity(humiditySensor1.humidityState)
+  triggerOnHumidity(humiditySensor.humidityState)
 
-  subscribe(humiditySensor1, "humidity", humidityHandler)
+  subscribe(humiditySensor, "humidity", humidityHandler)
 }
 
 def humidityHandler(evt) {
@@ -52,7 +52,7 @@ def humidityHandler(evt) {
 }
 
 private triggerOnHumidity(humidityState) {
-  def minHumidity = humidity1
+  def minHumidity = humidity
   def between = isBetween()
 
   if (humidityState.doubleValue < minHumidity) {
@@ -79,11 +79,11 @@ private isBetween() {
 }
 
 private turnOn() {
-  log.debug "Turning on ${plug1.displayName}..."
-  plug1.on()
+  log.debug "Turning on ${plug.displayName}..."
+  plug.on()
 }
 
 private turnOff() {
-  log.debug "Turning off ${plug1.displayName}..."
-  plug1.off()
+  log.debug "Turning off ${plug.displayName}..."
+  plug.off()
 }
