@@ -88,11 +88,15 @@ private scheduledTurnOff() {
 }
 
 private turnOn() {
-  log.debug "Turning on ${plug.displayName}..."
-  plug.on()
+  if (plug.currentSwitch != 'on') {
+    log.debug "Turning on ${plug.displayName}..."
+    plug.on()
+  }
 }
 
 private turnOff() {
-  log.debug "Turning off ${plug.displayName}..."
-  plug.off()
+  if (plug.currentSwitch != 'off') {
+    log.debug "Turning off ${plug.displayName}..."
+    plug.off()
+  }
 }
