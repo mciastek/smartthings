@@ -43,7 +43,10 @@ def initialize() {
   triggerOnHumidity(humiditySensor.humidityState)
 
   subscribe(humiditySensor, "humidity", humidityHandler)
-  schedule(toTime, scheduledTurnOff)
+
+  if (fromTime && toTime) {
+    schedule(toTime, scheduledTurnOff)
+  }
 }
 
 def humidityHandler(evt) {
